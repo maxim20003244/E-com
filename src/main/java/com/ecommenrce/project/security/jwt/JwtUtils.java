@@ -1,4 +1,5 @@
 package com.ecommenrce.project.security.jwt;
+import com.ecommenrce.project.security.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -15,22 +16,25 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+
     @Value("${spring.app.jwtSecret}")
     private String jwtSecret;
+
+
     @Value("${spring.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    public String getJwtFromHeader(HttpServletRequest request){
+    public String getJwtFromHeader(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        logger.debug("Authorization Header: {}",bearerToken);
-        if(bearerToken != null && bearerToken.startsWith("Bearer ")){
-            return bearerToken.substring(7);//Remove bearer prefix
+        logger.debug("Authorization Header: {}", bearerToken);
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7); // Remove Bearer prefix
         }
         return null;
     }
-    public String generateTokenFromUsername(UserDetails userDetails) {
+
+    public String generateTokenFromUsername(UserDetailsImpl userDetails) {
         String username = userDetails.getUsername();
         return Jwts.builder()
                 .subject(username)
@@ -39,21 +43,18 @@ public class JwtUtils {
                 .signWith(key())
                 .compact();
     }
-   private Key key(){
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-   }
 
-
-    private String getAllClaimsFromToken(String token) {
-     return    Jwts.parser()
+    public String getUserNameFromJwtToken(String token) {
+        return Jwts.parser()
                 .verifyWith((SecretKey) key())
                 .build().parseSignedClaims(token)
                 .getPayload().getSubject();
-
-
-
-
     }
+
+    private Key key() {
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    }
+
     public boolean validateJwtToken(String authToken) {
         try {
             System.out.println("Validate");
@@ -69,13 +70,5 @@ public class JwtUtils {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         }
         return false;
-    }
-
-
-    public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser()
-                .verifyWith((SecretKey) key())
-                .build().parseSignedClaims(token)
-                .getPayload().getSubject();
     }
 }

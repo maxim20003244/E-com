@@ -62,6 +62,9 @@ public class Users {
     orphanRemoval = true)
     private Set<Product> products;
 
+    @ToString.Exclude
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    private Cart cart;
     @Getter
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinTable(name = "user_address",joinColumns = @JoinColumn(name = "user_id"),

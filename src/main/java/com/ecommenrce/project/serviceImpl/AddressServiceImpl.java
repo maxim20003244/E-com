@@ -7,10 +7,10 @@ import com.ecommenrce.project.repository.AddressRepository;
 import com.ecommenrce.project.service.AddressService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -30,5 +30,13 @@ public class AddressServiceImpl implements AddressService {
         AddressDTO savedAddressDTO = modelMapper.map(savedAddress,AddressDTO.class);
 
         return savedAddressDTO;
+    }
+
+    @Override
+    public List<AddressDTO> getAllAddresses() {
+       List<Address> allAddresses =  addressRepository.findAll();
+       List<AddressDTO> addressDTO = allAddresses.stream().map(addresses ->
+               modelMapper.map(addresses, AddressDTO.class)).collect(Collectors.toList());
+        return addressDTO;
     }
 }

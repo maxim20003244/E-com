@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/api")
 public class AddressController {
@@ -26,6 +28,12 @@ public class AddressController {
         Users user = authUtil.loggedInUser();
       AddressDTO saveAddressDTO =  addressService.createAddress(user,addressDTO);
         return new ResponseEntity<>(saveAddressDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/addresses")
+    public ResponseEntity<List<AddressDTO>> getAllAddresses(){
+        List<AddressDTO> getAll = addressService.getAllAddresses();
+        return new ResponseEntity<>(getAll,HttpStatus.OK);
     }
 
 }

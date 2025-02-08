@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,9 @@ public class Address {
     @Size(min = 5,message = "Zipcode name must be at less 5 characters")
     private String zipcode;
     @ToString.Exclude
-    @ManyToMany(mappedBy = "addresses")
-    private List<Users> users = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 
     public Address(String street, String buildingName, String city, String state, String country) {
         this.street = street;

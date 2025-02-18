@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,5 +32,31 @@ public class AddressController {
         List<AddressDTO> getAll = addressService.getAllAddresses();
         return new ResponseEntity<>(getAll,HttpStatus.OK);
     }
+    @GetMapping("/addresses/{addressId}")
+    public ResponseEntity<AddressDTO> getAllAddresses(@PathVariable Long addressId){
+     AddressDTO getAddress = addressService.getAddressById(addressId);
+        return new ResponseEntity<>(getAddress,HttpStatus.OK);
+    }
+
+    @GetMapping ("/users/addresses")
+    public ResponseEntity<List<AddressDTO>> createAddresses(){
+        Users user = authUtil.loggedInUser();
+        List<AddressDTO >getAddress = addressService.getAddressByUser(user);
+
+        return new ResponseEntity<>(getAddress, HttpStatus.OK);
+    }
+
+    @PutMapping("/addresses/{addressId}")
+    public ResponseEntity<AddressDTO> updateAddressById(@PathVariable Long addressId,
+                                                         @RequestBody AddressDTO addressDTO){
+       AddressDTO updateAddress = addressService.updateAddressById(addressId,addressDTO);
+       return new ResponseEntity<>(updateAddress,HttpStatus.OK);
+    }
+    @DeleteMapping("/address/delete/{addressId}")
+    public ResponseEntity<AddressDTO> deleteAddressById(@PathVariable Long addressId){
+        AddressDTO deleteAddress = addressService.deleteAddressById(addressId);
+        return new ResponseEntity<>(deleteAddress,HttpStatus.OK);
+    }
+
 
 }

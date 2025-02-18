@@ -67,7 +67,7 @@ public class Users {
     private Cart cart;
     @Getter
     @OneToMany(mappedBy = "user",cascade = {CascadeType.PERSIST,CascadeType.MERGE},orphanRemoval = true)
-    @JoinTable(name = "user_address",joinColumns = @JoinColumn(name = "user_id"),
+ /*   @JoinTable(name = "user_address",joinColumns = @JoinColumn(name = "user_id"),
     inverseJoinColumns = @JoinColumn(name = "address_id"))
-    private List<Address> addresses = new ArrayList<>();
+ */   private List<Address> addresses = new ArrayList<>();
 }

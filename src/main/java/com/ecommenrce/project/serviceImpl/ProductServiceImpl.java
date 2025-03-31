@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
 
         if (isProductNotPresent) {
             Product product = modelMapper.map(productDTO, Product.class);
-            product.setImage("default.png");
+            product.setImage("NewImage.png");
             product.setCategory(category);
             double specialPrice = product.getPrice() -
                     ((product.getDiscount() * 0.01) * product.getPrice());

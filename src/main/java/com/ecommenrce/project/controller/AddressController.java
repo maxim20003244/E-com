@@ -27,7 +27,7 @@ public class AddressController {
         return new ResponseEntity<>(saveAddressDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/addresses")
+    @GetMapping (value = "/addresses")
     public ResponseEntity<List<AddressDTO>> getAllAddresses(){
         List<AddressDTO> getAll = addressService.getAllAddresses();
         return new ResponseEntity<>(getAll,HttpStatus.OK);

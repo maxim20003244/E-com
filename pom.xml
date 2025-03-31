@@ -98,7 +98,7 @@
             <version>1.18.34</version>
             <scope>provided</scope>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
     </dependencies>
 
     <build>

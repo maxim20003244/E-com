@@ -10,6 +10,7 @@ import com.ecommenrce.project.security.jwt.AuthTokenFilter;
 import com.ecommenrce.project.serviceImpl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,6 +37,14 @@ public class WebSecurityConfig {
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
+    @Bean
+    public FilterRegistrationBean<CorsErrorHeaderFilter> corsFilterRegistration(CorsErrorHeaderFilter filter) {
+        FilterRegistrationBean<CorsErrorHeaderFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(filter);
+        registrationBean.addUrlPatterns("/*"); // Apply to all paths
+        registrationBean.setOrder(-102); // Run before Spring Security (which uses -100)
+        return registrationBean;
+    }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {

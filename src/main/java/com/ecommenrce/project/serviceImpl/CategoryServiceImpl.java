@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -90,6 +91,19 @@ public class CategoryServiceImpl implements CategoryService {
 
         CategoryDTO  savedCategory = modelMapper.map(categoryFromDb,CategoryDTO.class);
         return savedCategory;
+    }
+
+    @Override
+    public List<CategoryDTO> getAllCategories() {
+        List<Category> allCategories = categoryRepository.findAll();
+
+        if (allCategories.isEmpty()) {
+            throw new ApiException("No categories found");
+        }
+
+        return allCategories.stream()
+                .map(category -> modelMapper.map(category, CategoryDTO.class))
+                .collect(Collectors.toList());
     }
 
 }

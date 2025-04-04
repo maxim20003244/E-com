@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.ecommenrce.project.config.AppConstants.SORT_DIR;
 
 @RestController
@@ -35,6 +37,11 @@ public class CategoryController {
             ){
         CategoryResponse categoryResponse = categoryService.getAllCategories(pageNumber,pageSize,sortBy,sortOrder);
         return new ResponseEntity<>(categoryResponse,HttpStatus.OK);
+    }
+    @GetMapping("/public/categories/all")
+    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
+        List<CategoryDTO> categories = categoryService.getAllCategories(); // no paging
+        return new ResponseEntity<>(categories, HttpStatus.OK);
     }
 
     //@PostMapping("/api/admin/categories")
